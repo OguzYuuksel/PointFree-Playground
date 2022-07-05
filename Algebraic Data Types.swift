@@ -396,25 +396,25 @@ NonEmptyArray(values: 1, 2, 3)
 //                 = A * (1 + A + A*A + ...)
 //                 = A * List(A)
 
-struct NonEmptyList<A> {
+struct NonEmptyListProduct<A> {
     let head: A
     let tail: List<A>
 }
 
-let zs = NonEmptyList(head: 1, tail: .cons(2, .cons(3, .empty)))
+let zs = NonEmptyListProduct(head: 1, tail: .cons(2, .cons(3, .empty)))
 
 // NonEmptyList(A) = A + A*A + A*A*A + ...
 //                 = A + A * (A + A*A + ...)
 //                 = A + A * NonEmptyList(A)
 
-enum NonEmptyListRec<A> {
+enum NonEmptyListSum<A> {
     case singleton(A)
-    indirect case cons(A, NonEmptyListRec<A>)
+    indirect case cons(A, NonEmptyListSum<A>)
 }
 
-let zs1: NonEmptyListRec<Int> = .cons(1, .cons(2, .singleton(3)))
+let zs1: NonEmptyListSum<Int> = .cons(1, .cons(2, .singleton(3)))
 
-extension NonEmptyListRec {
+extension NonEmptyListSum {
     var first: A {
         switch self {
         case let .singleton(first):
@@ -424,3 +424,5 @@ extension NonEmptyListRec {
         }
     }
 }
+
+
